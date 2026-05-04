@@ -7,10 +7,11 @@ import {
   IBM_Plex_Serif,
   Mona_Sans,
 } from "next/font/google";
+import { ClerkProvider } from "@clerk/nextjs";
 
 import "./globals.css";
 import { cn } from "@/lib/utils";
-import Navbar from "@/components/ui/Navbar";
+import Navbar from "@/components/Navbar";
 
 const figtree = Figtree({ subsets: ["latin"], variable: "--font-sans" });
 
@@ -49,23 +50,25 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html
-      lang="en"
-      className={cn(
-        "h-full",
-        "antialiased",
-        ibmPlexSerif.variable,
-        monaSans.variable,
-        "font-sans",
-        figtree.variable,
-      )}
-    >
-      <body
-        className={`${ibmPlexSerif.variable} ${monaSans.variable} relative font-sans antialiased`}
+    <ClerkProvider>
+      <html
+        lang="en"
+        className={cn(
+          "h-full",
+          "antialiased",
+          ibmPlexSerif.variable,
+          monaSans.variable,
+          "font-sans",
+          figtree.variable,
+        )}
       >
-        <Navbar />
-        {children}
-      </body>
-    </html>
+        <body
+          className={`${ibmPlexSerif.variable} ${monaSans.variable} relative font-sans antialiased`}
+        >
+          <Navbar />
+          {children}
+        </body>
+      </html>
+    </ClerkProvider>
   );
 }
