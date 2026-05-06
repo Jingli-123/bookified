@@ -2,7 +2,7 @@ import { model, Schema, models } from "mongoose";
 import { IVoiceSession } from "@/types";
 
 const VoiceSessionSchema = new Schema<IVoiceSession>({
-    clerkId: { type: String, required: true, index: true },
+    clerkId: { type: String, required: true, index:true },
     bookId: { type: Schema.Types.ObjectId, ref: 'Book', required: true },
     startedAt: { type: Date, required: true, default: Date.now },
     endedAt: { type: Date },

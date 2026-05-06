@@ -1,4 +1,4 @@
-import React from "react";
+
 import HeroSection from "@/components/HeroSection";
 import { sampleBooks } from "@/lib/constants";
 import BookCard from "@/components/BookCard";
