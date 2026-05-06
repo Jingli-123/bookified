@@ -1,25 +1,32 @@
 'use client';
 
 import React, { useCallback, useRef } from 'react';
-import { useController, FieldValues } from 'react-hook-form';
 import { X } from 'lucide-react';
-import { FileUploadFieldProps } from '@/types';
 import { cn } from '@/lib/utils';
 import { FormItem, FormLabel, FormControl, FormMessage } from '@/components/ui/form';
 
-const FileUploader = <T extends FieldValues>({
-    control,
-    name,
+// 更新 Props 定义（根据你的项目情况调整类型）
+interface Props {
+    field: any; // 或者使用 ControllerRenderProps
+    label: string;
+    acceptTypes: string[];
+    disabled?: boolean;
+    icon: any;
+    placeholder: string;
+    hint: string;
+}
+
+const FileUploader = ({
+    field,
     label,
     acceptTypes,
     disabled,
     icon: Icon,
     placeholder,
     hint,
-}: FileUploadFieldProps<T>) => {
-    const {
-        field: { onChange, value },
-    } = useController({ name, control });
+}: Props) => {
+    // 直接从 field 中解构，不再需要 useController
+    const { onChange, value } = field;
 
     const inputRef = useRef<HTMLInputElement>(null);
 
@@ -68,7 +75,9 @@ const FileUploader = <T extends FieldValues>({
 
                     {isUploaded ? (
                         <div className="flex flex-col items-center relative w-full px-4">
-                            <p className="upload-dropzone-text line-clamp-1">{(value as File).name}</p>
+                            <p className="upload-dropzone-text line-clamp-1">
+                                {(value as File).name}
+                            </p>
                             <button
                                 type="button"
                                 onClick={onRemove}

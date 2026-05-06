@@ -18,3 +18,4 @@ BookSegmentSchema.index({ bookId: 1, content: 'text' });
 const BookSegment = models.BookSegment || model<IBookSegment>('BookSegment', BookSegmentSchema);
 
 export default BookSegment;
+ 
