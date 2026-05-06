@@ -66,7 +66,7 @@ const HeroSection = () => {
                                     <p className="library-step-description text-gray-500">Discuss with AI</p>
                                 </div>
                             </li>
-                        </ul>
+                        </ol>
                     </div>
                 </div>
             </div>
