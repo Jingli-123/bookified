@@ -10,7 +10,7 @@ const nextConfig: NextConfig = {
       },
       {
         protocol: "https",
-        hostname: "1soagemizpecwbp2.private.blob.vercel-storage.com",
+        hostname: "*.public.blob.vercel-storage.com",
       },
     ],
   },
