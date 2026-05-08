@@ -11,17 +11,19 @@ const page = async () => {
       <div>
         <HeroSection />
         <div className="library-books-grid">
-          {books?.map((book) => {
-            return (
-              <BookCard
-                key={book._id}
-                title={book.title}
-                author={book.author}
-                coverURL={book.coverURL}
-                slug={book.slug}
-              />
-            );
-          })}
+          {books &&
+            books?.length > 0 &&
+            books?.map((book) => {
+              return (
+                <BookCard
+                  key={book._id}
+                  title={book.title}
+                  author={book.author}
+                  coverURL={book.coverURL}
+                  slug={book.slug}
+                />
+              );
+            })}
         </div>
       </div>
     </main>
