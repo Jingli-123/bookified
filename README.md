@@ -37,7 +37,6 @@ Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/bui
 
 
 ## Check the video
- ## Check the video
 
 Watch a demonstration of the Vapi voice call feature in action:
 
