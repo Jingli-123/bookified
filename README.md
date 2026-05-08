@@ -37,4 +37,8 @@ Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/bui
 
 
 ## Check the video
-https://youtu.be/MAjhbiyHVoA
+ ## Check the video
+
+Watch a demonstration of the Vapi voice call feature in action:
+
+[📹 Bookified Voice Call Demo](https://youtu.be/MAjhbiyHVoA)
