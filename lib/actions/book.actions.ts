@@ -14,6 +14,7 @@ const { PLAN_LIMITS } = await import("@/lib/subscription-constants");
 
 export const getAllBooks = async (userId: string, search?: string) => {
   try {
+    console.log("getAllBooks query:", { clerkId: userId });
     if (!userId) {
       throw new Error("Unauthorized");
     }
