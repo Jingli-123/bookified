@@ -25,7 +25,7 @@ const FileUploader = ({
     placeholder,
     hint,
 }: Props) => {
-    // 直接从 field 中解构，不再需要 useController
+
     const { onChange, value } = field;
 
     const inputRef = useRef<HTMLInputElement>(null);

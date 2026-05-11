@@ -82,7 +82,7 @@ const UploadForm = () => {
     const books = await getAllBooks(userId);
     setIsSubmitting(true);
 
-    if (books.data && books.data?.length > 1) return;
+    if (books.data && books.data?.length >= 1) return;
 
     // PostHog -> Track Book Uploads...
 
@@ -98,6 +98,18 @@ const UploadForm = () => {
 
       const fileTitle = data.title.replace(/\s+/g, "-").toLowerCase();
       const pdfFile = data.pdfFile;
+
+      const MAX_FILE_SIZE = 10 * 1024 * 1024;
+
+      if (pdfFile.size > MAX_FILE_SIZE) {
+        toast.error("PDF file must be smaller than 10MB.");
+        return;
+      }
+
+      if (pdfFile.type !== "application/pdf") {
+        toast.error("Only PDF files are allowed.");
+        return;
+      }
 
       const parsedPDF = await parsePDFFile(pdfFile);
 

@@ -100,21 +100,32 @@ export const createBook = async (data: CreateBook, userId: string) => {
       return { success: false, error: "Unauthorized" };
     }
 
-    const plan = await getUserPlan();
-    const limits = PLAN_LIMITS[plan];
+    // const plan = await getUserPlan();
+    // const limits = PLAN_LIMITS[plan];
 
     const bookCount = await Book.countDocuments({ clerkId: userId });
 
-    if (bookCount >= limits.maxBooks) {
+     if (bookCount >= 1) {
       const { revalidatePath } = await import("next/cache");
       revalidatePath("/");
 
       return {
         success: false,
-        error: `You have reached the maximum number of books allowed for your ${plan} plan (${limits.maxBooks}). Please upgrade to add more books.`,
+        error: `You have reached the maximum number of books. Please wait for the new version release.`,
         isBillingError: true,
       };
     }
+
+    // if (bookCount >= limits.maxBooks) {
+    //   const { revalidatePath } = await import("next/cache");
+    //   revalidatePath("/");
+
+    //   return {
+    //     success: false,
+    //     error: `You have reached the maximum number of books allowed for your ${plan} plan (${limits.maxBooks}). Please upgrade to add more books.`,
+    //     isBillingError: true,
+    //   };
+    // }
 
     const book = await Book.create({
       ...data,
