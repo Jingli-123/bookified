@@ -1,4 +1,4 @@
-
+import React from "react";
 import UploadForm from "@/components/uploadForm";
 
 const page = () => {
@@ -8,10 +8,9 @@ const page = () => {
         <section className="flex flex-col gap-5">
           <h1 className="page-title-xl">Add a New Book</h1>
           <p className="subtitle">
-            Upload a PDF to generate your interactive interview
+            Subscriptions will open soon. You can upload 1 book for now.
           </p>
         </section>
-        <UploadForm />
       </div>
     </main>
   );

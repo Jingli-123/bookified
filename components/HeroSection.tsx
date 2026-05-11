@@ -1,6 +1,7 @@
 import React from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
+import FloatGroup from './ui/float-group'
 
 const HeroSection = () => {
     return (
@@ -21,7 +22,7 @@ const HeroSection = () => {
                     </div>
 
                     {/* Center Part - Desktop */}
-                    <div className="library-hero-illustration-desktop">
+                    {/* <div className="library-hero-illustration-desktop">
                         <Image
                             src="/assets/hero-illustration.png"
                             alt="Vintage books and a globe"
@@ -29,10 +30,11 @@ const HeroSection = () => {
                             height={400}
                             className="object-contain"
                         />
-                    </div>
+                    </div> */}
+                    <FloatGroup />
 
                     {/* Center Part - Mobile (Hidden on Desktop) */}
-                    <div className="library-hero-illustration">
+                    {/* <div className="library-hero-illustration">
                         <Image
                             src="/assets/hero-illustration.png"
                             alt="Vintage books and a globe"
@@ -40,7 +42,7 @@ const HeroSection = () => {
                             height={300}
                             className="object-contain"
                         />
-                    </div>
+                    </div> */}
 
                     {/* Right Part */}
                     <div className="library-steps-card min-w-[260px] max-w-[280px] z-10 shadow-soft-md">

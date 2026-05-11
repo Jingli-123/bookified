@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Upload, ImageIcon } from "lucide-react";
@@ -34,16 +34,26 @@ import {
 import { useRouter } from "next/navigation";
 import { parsePDFFile } from "@/lib/utils";
 import { upload } from "@vercel/blob/client";
+import { getAllBooks } from "@/lib/actions/book.actions";
+import { get } from "http";
 
 const UploadForm = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [isMounted, setIsMounted] = useState(false);
-  const { userId } = useAuth();
+  // const [isMounted, setIsMounted] = useState(false);
+  const { userId, isLoaded } = useAuth();
   const router = useRouter();
 
-  useEffect(() => {
-    setIsMounted(true);
-  }, []);
+  // useEffect(() => {
+  //   const fetchBooks = async () => {
+  //     if (!userId) return;
+
+  //     const books = await getAllBooks(userId);
+
+  //     console.log("book-book", books);
+  //   };
+
+  //   fetchBooks();
+  // }, [userId]);
 
   const form = useForm<BookUploadFormValues>({
     resolver: zodResolver(UploadSchema),
@@ -56,17 +66,28 @@ const UploadForm = () => {
     },
   });
 
+  if (!isLoaded) {
+    return null;
+  }
+
+  if (!userId) {
+    return null;
+  }
+
   const onSubmit = async (data: BookUploadFormValues) => {
     if (!userId) {
       return toast.error("Please login to upload books");
     }
 
+    const books = await getAllBooks(userId);
     setIsSubmitting(true);
+
+    if (books.data && books.data?.length > 1) return;
 
     // PostHog -> Track Book Uploads...
 
     try {
-      const existsCheck = await checkBookExists(data.title);
+      const existsCheck = await checkBookExists(data.title, userId);
 
       if (existsCheck.exists && existsCheck.book) {
         toast.info("Book with same title already exists.");
@@ -95,12 +116,11 @@ const UploadForm = () => {
 
       let coverUrl: string;
       const safeTitle = fileTitle
-          .replace(/\.[^/.]+$/, "")
-          .replace(/[^a-zA-Z0-9-_]/g, "-")
-          .toLowerCase();
+        .replace(/\.[^/.]+$/, "")
+        .replace(/[^a-zA-Z0-9-_]/g, "-")
+        .toLowerCase();
 
       if (data.coverImage) {
-        
         const coverFile = data.coverImage;
         const extension = coverFile.name.split(".").pop() || "png";
         const uploadedCoverBlob = await upload(
@@ -120,21 +140,24 @@ const UploadForm = () => {
         const uploadedCoverBlob = await upload(`${safeTitle}_cover.png`, blob, {
           access: "public",
           handleUploadUrl: "/api/upload",
-        //   contentType: "image/png",
+          //   contentType: "image/png",
         });
         coverUrl = uploadedCoverBlob.url;
       }
 
-      const book = await createBook({
-        clerkId: userId,
-        title: data.title,
-        author: data.author,
-        persona: data.persona,
-        fileURL: uploadedPdfBlob.url,
-        fileBlobKey: uploadedPdfBlob.pathname,
-        coverURL: coverUrl,
-        fileSize: pdfFile.size,
-      });
+      const book = await createBook(
+        {
+          clerkId: userId,
+          title: data.title,
+          author: data.author,
+          persona: data.persona,
+          fileURL: uploadedPdfBlob.url,
+          fileBlobKey: uploadedPdfBlob.pathname,
+          coverURL: coverUrl,
+          fileSize: pdfFile.size,
+        },
+        userId,
+      );
 
       if (!book.success) {
         toast.error((book.error as string) || "Failed to create book");
@@ -173,7 +196,8 @@ const UploadForm = () => {
     }
   };
 
-  if (!isMounted) return null;
+  // if (!isMounted) return null;
+  if (!isLoaded) return null;
 
   return (
     <>

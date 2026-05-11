@@ -19,7 +19,7 @@ export default async function BookDetailsPage({
   }
 
   const { slug } = await params;
-  const result = await getBookBySlug(slug);
+  const result = await getBookBySlug(slug, userId);
 
   if (!result.success || !result.data) {
     redirect("/");

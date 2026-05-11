@@ -6,10 +6,17 @@ import { escapeRegex, generateSlug, serializeData } from "@/lib/utils";
 import Book from "@/database/models/book.model";
 import BookSegment from "@/database/models/book-segment.model";
 import mongoose from "mongoose";
+// import { auth } from "@clerk/nextjs/server";
 import { getUserPlan } from "@/lib/subscription.server";
+const { PLAN_LIMITS } = await import("@/lib/subscription-constants");
 
-export const getAllBooks = async (search?: string) => {
+// const { userId } = await auth();
+
+export const getAllBooks = async (userId: string, search?: string) => {
   try {
+    if (!userId) {
+      throw new Error("Unauthorized");
+    }
     await connectToDatabase();
 
     let query = {};
@@ -18,7 +25,12 @@ export const getAllBooks = async (search?: string) => {
       const escapedSearch = escapeRegex(search);
       const regex = new RegExp(escapedSearch, "i");
       query = {
+        clerkId: userId,
         $or: [{ title: { $regex: regex } }, { author: { $regex: regex } }],
+      };
+    } else {
+      query = {
+        clerkId: userId,
       };
     }
 
@@ -32,60 +44,56 @@ export const getAllBooks = async (search?: string) => {
     console.error("Error connecting to database", e);
     return {
       success: false,
-      error: e,
+      error: getErrorMessage(e, "Something went wrong"),
     };
   }
 };
 
-export const checkBookExists = async (title: string) => {
+export const checkBookExists = async (title: string, userId?: string) => {
   try {
     await connectToDatabase();
 
     const slug = generateSlug(title);
+    if (userId) {
+      const existingBook = await Book.findOne({ slug, clerkId: userId }).lean();
 
-    const existingBook = await Book.findOne({ slug }).lean();
-
-    if (existingBook) {
-      return {
-        exists: true,
-        book: serializeData(existingBook),
-      };
+      if (existingBook) {
+        return {
+          exists: true,
+          book: serializeData(existingBook),
+        };
+      }
     }
 
     return {
       exists: false,
     };
   } catch (e) {
-    console.error("Error checking book exists", e);
+    console.error("Error checking book exists");
     return {
       exists: false,
-      error: e,
+      error: getErrorMessage(e, "Something went wrong"),
     };
   }
 };
 
-export const createBook = async (data: CreateBook) => {
+export const createBook = async (data: CreateBook, userId: string) => {
   try {
     await connectToDatabase();
 
     const slug = generateSlug(data.title);
 
-    const existingBook = await Book.findOne({ slug }).lean();
+    const existingBook = await checkBookExists(data.title, userId);
 
-    if (existingBook) {
+    if (existingBook.exists) {
       return {
         success: true,
-        data: serializeData(existingBook),
+        data: { ...serializeData(existingBook), slug },
         alreadyExists: true,
       };
     }
 
     // Todo: Check subscription limits before creating a book
-    const { getUserPlan } = await import("@/lib/subscription.server");
-    const { PLAN_LIMITS } = await import("@/lib/subscription-constants");
-
-    const { auth } = await import("@clerk/nextjs/server");
-    const { userId } = await auth();
 
     if (!userId || userId !== data.clerkId) {
       return { success: false, error: "Unauthorized" };
@@ -119,20 +127,20 @@ export const createBook = async (data: CreateBook) => {
       data: serializeData(book),
     };
   } catch (e) {
-    console.error("Error creating a book", e);
+    console.error("Error creating a book");
 
     return {
       success: false,
-      error: e,
+      error: getErrorMessage(e, "Something went wrong"),
     };
   }
 };
 
-export const getBookBySlug = async (slug: string) => {
+export const getBookBySlug = async (slug: string, userId: string) => {
   try {
     await connectToDatabase();
 
-    const book = await Book.findOne({ slug }).lean();
+    const book = await Book.findOne({ slug, clerkId: userId }).lean();
 
     if (!book) {
       return { success: false, error: "Book not found" };
@@ -146,7 +154,7 @@ export const getBookBySlug = async (slug: string) => {
     console.error("Error fetching book by slug", e);
     return {
       success: false,
-      error: e,
+      error: getErrorMessage(e, "Something went wrong"),
     };
   }
 };
@@ -158,8 +166,6 @@ export const saveBookSegments = async (
 ) => {
   try {
     await connectToDatabase();
-
-    console.log("Saving book segments...");
 
     const segmentsToInsert = segments.map(
       ({ text, segmentIndex, pageNumber, wordCount }) => ({
@@ -186,10 +192,12 @@ export const saveBookSegments = async (
     console.error("Error saving book segments", e);
     await BookSegment.deleteMany({ bookId });
     await Book.findByIdAndDelete(bookId);
-    console.log('Deleted book segments and book due to failure to save segments.')
+    console.log(
+      "Deleted book segments and book due to failure to save segments.",
+    );
     return {
       success: false,
-      error: e,
+      error: getErrorMessage(e, "Something went wrong"),
     };
   }
 };
@@ -252,4 +260,9 @@ export const searchBookSegments = async (
       data: [],
     };
   }
+};
+const getErrorMessage = (error: unknown, fallback: string) => {
+  if (error instanceof Error) return error.message;
+  if (typeof error === "string") return error;
+  return fallback;
 };
