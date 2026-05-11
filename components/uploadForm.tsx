@@ -35,7 +35,6 @@ import { useRouter } from "next/navigation";
 import { parsePDFFile } from "@/lib/utils";
 import { upload } from "@vercel/blob/client";
 import { getAllBooks } from "@/lib/actions/book.actions";
-import { get } from "http";
 
 const UploadForm = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -80,9 +79,13 @@ const UploadForm = () => {
     }
 
     const books = await getAllBooks(userId);
-    setIsSubmitting(true);
+    if (books.data && books.data?.length >= 1) {
+      toast.info("Free users can only upload one book. Please upgrade.");
+      router.push("/subscriptions");
+      return;
+    }
 
-    if (books.data && books.data?.length >= 1) return;
+    setIsSubmitting(true);
 
     // PostHog -> Track Book Uploads...
 

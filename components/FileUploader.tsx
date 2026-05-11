@@ -5,9 +5,8 @@ import { X } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { FormItem, FormLabel, FormControl, FormMessage } from '@/components/ui/form';
 
-// 更新 Props 定义（根据你的项目情况调整类型）
 interface Props {
-    field: any; // 或者使用 ControllerRenderProps
+    field: any; 
     label: string;
     acceptTypes: string[];
     disabled?: boolean;
