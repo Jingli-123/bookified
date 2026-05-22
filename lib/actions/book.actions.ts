@@ -16,7 +16,9 @@ export const getAllBooks = async (userId: string, search?: string) => {
   try {
     console.log("getAllBooks query:", { clerkId: userId });
     if (!userId) {
-      throw new Error("Unauthorized");
+      return {
+        success: false,
+      };
     }
     await connectToDatabase();
 
@@ -105,7 +107,7 @@ export const createBook = async (data: CreateBook, userId: string) => {
 
     const bookCount = await Book.countDocuments({ clerkId: userId });
 
-     if (bookCount >= 1) {
+    if (bookCount >= 1) {
       const { revalidatePath } = await import("next/cache");
       revalidatePath("/");
 
