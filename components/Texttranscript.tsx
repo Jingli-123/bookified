@@ -1,20 +1,16 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Mic } from "lucide-react";
 import { Messages } from "@/types";
+import ConversationControls from "./ConversationControls";
 
 interface TranscriptProps {
   messages: Messages[];
-  currentMessage: string;
-  currentUserMessage: string;
+  currentUserMessage?: string;
 }
 
-const Transcript = ({
-  messages,
-  currentMessage,
-  currentUserMessage,
-}: TranscriptProps) => {
+const Texttranscript = ({ messages, currentUserMessage }: TranscriptProps) => {
   const scrollRef = useRef<HTMLDivElement>(null);
 
   const scrollToBottom = () => {
@@ -28,24 +24,7 @@ const Transcript = ({
 
   useEffect(() => {
     scrollToBottom();
-  }, [messages, currentMessage, currentUserMessage]);
-
-  const isEmpty =
-    messages.length === 0 && !currentMessage && !currentUserMessage;
-
-  if (isEmpty) {
-    return (
-      <div className="transcript-empty">
-        <Mic className="size-12 text-[#212a3b] mb-4" />
-        <h2 className="transcript-empty-text">
-          <b>No conversation yet</b>
-        </h2>
-        <p className="transcript-empty-hint">
-          Click the mic button above to start talking
-        </p>
-      </div>
-    );
-  }
+  }, [messages, currentUserMessage]);
 
   return (
     <div
@@ -72,6 +51,15 @@ const Transcript = ({
           </div>
         </div>
       ))}
+      {/* Assistant Streaming Message */}
+      {/* {currentMessage && (
+        <div className="transcript-message transcript-message-assistant">
+          <div className="transcript-bubble transcript-bubble-assistant">
+            {currentMessage}
+            <span className="transcript-cursor" />
+          </div>
+        </div>
+      )} */}
 
       {/* User Streaming Message */}
       {currentUserMessage && (
@@ -82,18 +70,9 @@ const Transcript = ({
           </div>
         </div>
       )}
-
-      {/* Assistant Streaming Message */}
-      {currentMessage && (
-        <div className="transcript-message transcript-message-assistant">
-          <div className="transcript-bubble transcript-bubble-assistant">
-            {currentMessage}
-            <span className="transcript-cursor" />
-          </div>
-        </div>
-      )}
+      {/* <ConversationControls onChange={setUserQuestion} /> */}
     </div>
   );
 };
 
-export default Transcript;
+export default Texttranscript;

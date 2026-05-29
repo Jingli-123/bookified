@@ -3,7 +3,6 @@ import { redirect } from "next/navigation";
 import Image from "next/image";
 import Link from "next/link";
 import { ArrowLeft, MicOff, Mic } from "lucide-react";
-
 import { getBookBySlug } from "@/lib/actions/book.actions";
 import VapiControls from "@/components/VapiControls";
 
@@ -32,7 +31,6 @@ export default async function BookDetailsPage({
       <Link href="/" className="back-btn-floating">
         <ArrowLeft className="size-6 text-[#212a3b]" />
       </Link>
-
       <VapiControls book={book} />
     </div>
   );

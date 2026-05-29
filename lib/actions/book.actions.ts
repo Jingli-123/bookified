@@ -6,6 +6,7 @@ import { escapeRegex, generateSlug, serializeData } from "@/lib/utils";
 import Book from "@/database/models/book.model";
 import BookSegment from "@/database/models/book-segment.model";
 import mongoose from "mongoose";
+import { getErrorMessage } from "../utils";
 // import { auth } from "@clerk/nextjs/server";
 import { getUserPlan } from "@/lib/subscription.server";
 const { PLAN_LIMITS } = await import("@/lib/subscription-constants");
@@ -150,6 +151,34 @@ export const createBook = async (data: CreateBook, userId: string) => {
   }
 };
 
+export const createEmbeddding = async (clerkId: string, bookId: string) => {
+  const url = `${process.env.BASE_EMB_URL}/booksegments/embedding/${bookId}`;
+  try {
+    const res = await fetch(url, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        // "Authorization": `Bearer ${token}`,
+      },
+      body: JSON.stringify({
+        clerkId: clerkId,
+      }),
+    });
+    console.log("createEmbeddding", res);
+    return {
+      success: true,
+      data: res,
+    };
+  } catch (e) {
+    console.error("Error creating a book");
+
+    return {
+      success: false,
+      error: getErrorMessage(e, "Something went wrong"),
+    };
+  }
+};
+
 export const getBookBySlug = async (slug: string, userId: string) => {
   try {
     await connectToDatabase();
@@ -274,9 +303,4 @@ export const searchBookSegments = async (
       data: [],
     };
   }
-};
-const getErrorMessage = (error: unknown, fallback: string) => {
-  if (error instanceof Error) return error.message;
-  if (typeof error === "string") return error;
-  return fallback;
 };

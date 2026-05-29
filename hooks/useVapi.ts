@@ -186,7 +186,6 @@ export function useVapi(book: IBook) {
         if (message.transcriptType === "final") {
           if (message.role === "assistant") setCurrentMessage("");
           if (message.role === "user") setCurrentUserMessage("");
-
           setMessages((prev) => {
             const isDupe = prev.some(
               (m) =>
