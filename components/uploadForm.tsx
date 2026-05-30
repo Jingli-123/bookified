@@ -30,6 +30,7 @@ import {
   checkBookExists,
   createBook,
   saveBookSegments,
+  createEmbeddding,
 } from "@/lib/actions/book.actions";
 import { useRouter } from "next/navigation";
 import { parsePDFFile } from "@/lib/utils";
@@ -199,6 +200,8 @@ const UploadForm = () => {
         toast.error("Failed to save book segments");
         throw new Error("Failed to save book segments");
       }
+
+      const res = createEmbeddding(userId, book.data._id);
 
       form.reset();
       router.push("/");

@@ -21,12 +21,12 @@ export default function ConversationControls({
         fullWidth
         value={message}
         onChange={(e) => setMessage(e.target.value)}
-        onKeyDown={(e) => {
-          if (e.key === "Enter") {
-            e.preventDefault();
-            handleSend();
-          }
-        }}
+        // onKeyDown={(e) => {
+        //   if (e.key === "Enter") {
+        //     e.preventDefault();
+        //     handleSend();
+        //   }
+        // }}
         slotProps={{
           input: {
             endAdornment: (

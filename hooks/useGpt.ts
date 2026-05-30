@@ -1,8 +1,11 @@
 import { useCallback, useState } from "react";
 import { getErrorMessage } from "../lib/utils";
 import { Messages } from "@/types";
+import { useAuth } from "@clerk/nextjs";
 
 export default function useGpt() {
+  const { getToken } = useAuth();
+
   const messStr: string = "Hi there, How can I help you?";
   const [loading, setLoading] = useState<boolean>(false);
   const [gptMessage, setGptMessage] = useState<string>(messStr);
@@ -16,6 +19,7 @@ export default function useGpt() {
 
   const postUserMess = useCallback(
     async (content: string, clerkId: string, bookId: string) => {
+      const token = await getToken();
       setLoading(true);
       if (!content || !clerkId || !bookId) {
         return;
@@ -23,12 +27,11 @@ export default function useGpt() {
       try {
         const url = process.env.NEXT_PUBLIC_BASE_EMB_URL;
         const api_url = `${url}/questions/embed`;
-
         const res = await fetch(api_url, {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
-            // "Authorization": `Bearer ${token}`,
+            "Authorization": `Bearer ${token}`,
           },
           body: JSON.stringify({
             content: content,

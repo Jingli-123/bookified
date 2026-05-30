@@ -48,7 +48,7 @@ function a11yProps(index: number) {
 export default function BasicTabs({ book }: { book: IBook }) {
   const { userId } = useAuth();
   const { messages, currentMessage, currentUserMessage } = useVapi(book);
-  const { loading, postUserMess, gptMessage, messageArr, success } = useGpt();
+  const { loading, postUserMess, messageArr, success } = useGpt();
 
   const [value, setValue] = React.useState(0);
 
