@@ -201,7 +201,9 @@ const UploadForm = () => {
         throw new Error("Failed to save book segments");
       }
 
-      const res = createEmbeddding(userId, book.data._id);
+      const res = await createEmbeddding(userId, book.data._id);
+
+      console.log("create embedding", res);
 
       form.reset();
       router.push("/");

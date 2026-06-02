@@ -19,11 +19,12 @@ export default function useGpt() {
 
   const postUserMess = useCallback(
     async (content: string, clerkId: string, bookId: string) => {
+      console.log(process.env.NEXT_PUBLIC_BASE_EMB_URL);
       const token = await getToken();
       setLoading(true);
-      if (!content || !clerkId || !bookId) {
-        return;
-      }
+      // if (!content || !clerkId || !bookId) {
+      //   return;
+      // }
       try {
         const url = process.env.NEXT_PUBLIC_BASE_EMB_URL;
         const api_url = `${url}/questions/embed`;

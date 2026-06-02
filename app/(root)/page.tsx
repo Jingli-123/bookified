@@ -10,6 +10,7 @@ const page = async () => {
   // const user = await client.users.getUser(userId as string);
 
   const bookResults = await getAllBooks(userId as string);
+  console.log("books", bookResults);
 
   const books = bookResults.success ? bookResults.data : [];
 

@@ -7,11 +7,10 @@ import Book from "@/database/models/book.model";
 import BookSegment from "@/database/models/book-segment.model";
 import mongoose from "mongoose";
 import { getErrorMessage } from "../utils";
-// import { auth } from "@clerk/nextjs/server";
+import { auth } from "@clerk/nextjs/server";
 import { getUserPlan } from "@/lib/subscription.server";
+import { success } from "zod";
 const { PLAN_LIMITS } = await import("@/lib/subscription-constants");
-
-// const { userId } = await auth();
 
 export const getAllBooks = async (userId: string, search?: string) => {
   try {
@@ -79,6 +78,44 @@ export const checkBookExists = async (title: string, userId?: string) => {
       error: getErrorMessage(e, "Something went wrong"),
     };
   }
+};
+
+export const deleteBook = async (userId: string, bookTitle: string) => {
+  console.log("deleteBook", bookTitle);
+  const data = await checkBookExists(bookTitle, userId);
+  if (data.book) {
+    const id = serializeData(data).book._id;
+    try {
+      if (!userId) return;
+      await connectToDatabase();
+      const res = await Book.deleteOne({ clerkId: userId, title: bookTitle });
+      const result = await BookSegment.deleteMany({
+        clerkId: userId,
+        bookId: Object(id),
+      });
+      console.log("Deleted", res);
+      return {
+        success: true,
+        error: `You have been deleted book successfully.`,
+        isDeleted: true,
+      };
+    } catch (e) {
+      return {
+        success: false,
+        error: `The book deleted unsuccessfully.`,
+        isDeleted: false,
+      };
+    }
+  } else {
+    return {
+      success: false,
+      error: `Not book found.`,
+    };
+  }
+
+  // return {
+  //   data: id,
+  // };
 };
 
 export const createBook = async (data: CreateBook, userId: string) => {
@@ -152,22 +189,28 @@ export const createBook = async (data: CreateBook, userId: string) => {
 };
 
 export const createEmbeddding = async (clerkId: string, bookId: string) => {
-  const url = `${process.env.BASE_EMB_URL}/booksegments/embedding/${bookId}`;
+  if (!clerkId) return;
+  const url = `${process.env.NEXT_PUBLIC_BASE_EMB_URL}/booksegments/embedding/${bookId}`;
+  const { getToken } = await auth();
+
   try {
+    const token = await getToken();
+    console.log("token", token);
     const res = await fetch(url, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        // "Authorization": `Bearer ${token}`,
+        Authorization: `Bearer ${token}`,
       },
       body: JSON.stringify({
         clerkId: clerkId,
       }),
     });
     console.log("createEmbeddding", res);
+    const data = await res.json();
     return {
       success: true,
-      data: res,
+      data,
     };
   } catch (e) {
     console.error("Error creating a book");

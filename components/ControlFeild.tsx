@@ -60,7 +60,12 @@ export default function BasicTabs({ book }: { book: IBook }) {
   };
 
   useEffect(() => {
-    if (loading) return;
+    console.log("userQuestion", userQuestion);
+  }, [userQuestion]);
+
+  useEffect(() => {
+    console.log("excute");
+    // if (loading) return;
     if (!userId || !book) return;
     console.log("message gpt question", userQuestion);
     if (userQuestion !== "") {
