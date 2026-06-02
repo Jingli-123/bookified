@@ -74,7 +74,7 @@ export default function BasicTabs({ book }: { book: IBook }) {
     if (success) {
       setUserQuestion("");
     }
-  }, [userQuestion, success]);
+  }, [userQuestion]);
 
   useEffect(() => {
     console.log("message", messageArr);
