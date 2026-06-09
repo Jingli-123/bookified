@@ -145,7 +145,7 @@ export const createBook = async (data: CreateBook, userId: string) => {
 
     const bookCount = await Book.countDocuments({ clerkId: userId });
 
-    if (bookCount >= 1) {
+    if (bookCount >= 2) {
       const { revalidatePath } = await import("next/cache");
       revalidatePath("/");
 
@@ -227,6 +227,29 @@ export const getBookBySlug = async (slug: string, userId: string) => {
     await connectToDatabase();
 
     const book = await Book.findOne({ slug, clerkId: userId }).lean();
+
+    if (!book) {
+      return { success: false, error: "Book not found" };
+    }
+
+    return {
+      success: true,
+      data: serializeData(book),
+    };
+  } catch (e) {
+    console.error("Error fetching book by slug", e);
+    return {
+      success: false,
+      error: getErrorMessage(e, "Something went wrong"),
+    };
+  }
+};
+
+export const getBookByBookId = async (bookId:string, userId: string) => {
+  try {
+    await connectToDatabase();
+
+    const book = await Book.findOne({ _id:bookId, clerkId: userId }).lean();
 
     if (!book) {
       return { success: false, error: "Book not found" };

@@ -80,6 +80,8 @@ export interface BookCardProps {
   author: string;
   coverURL: string;
   slug: string;
+  bookId:string;
+  onSelect:(id:string)=>void;
 }
 
 export interface Messages {

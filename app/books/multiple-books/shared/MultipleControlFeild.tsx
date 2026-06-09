@@ -8,7 +8,7 @@ import Transcript from "@/components/Transcript";
 import Texttranscript from "@/components/Texttranscript";
 import useVapi from "@/hooks/useVapi";
 import { IBook } from "@/types";
-import ConversationControls from "./ConversationControls";
+import ConversationControls from "@/components/ConversationControls";
 import useGpt from "@/hooks/useGpt";
 import { useState, useEffect } from "react";
 import { useAuth } from "@clerk/nextjs";
@@ -45,15 +45,21 @@ function a11yProps(index: number) {
   };
 }
 
-export default function ControlFeild({ book }: { book: IBook }) {
+interface Props{
+    bookIds:string[];
+}
+
+export default function MultipleControlFeild({bookIds}:Props) {
   const { userId } = useAuth();
-  const { messages, currentMessage, currentUserMessage } = useVapi(book);
-  const { loading, postUserMess, messageArr, success } = useGpt();
+  const {
+    loading,
+    postUserMessforMultipleBooks,
+    messageArr,
+    success,
+  } = useGpt();
 
-  const [value, setValue] = React.useState(0);
-
+  const [value, setValue] = useState(0);
   const [userQuestion, setUserQuestion] = useState<string>();
-  const [assistantMess, setAssistantMess] = useState<string>("");
 
   const handleChange = (event: React.SyntheticEvent, newValue: number) => {
     setValue(newValue);
@@ -66,10 +72,10 @@ export default function ControlFeild({ book }: { book: IBook }) {
   useEffect(() => {
     console.log("excute");
     // if (loading) return;
-    if (!userId || !book) return;
+    if (!userId || !bookIds) return;
     console.log("message gpt question", userQuestion);
     if (userQuestion !== "") {
-      postUserMess(userQuestion as string, userId, book._id);
+      postUserMessforMultipleBooks(userQuestion as string, userId, bookIds);
     }
     if (success) {
       setUserQuestion("");

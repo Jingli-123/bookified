@@ -80,7 +80,7 @@ const UploadForm = () => {
     }
 
     const books = await getAllBooks(userId);
-    if (books.data && books.data?.length >= 1) {
+    if (books.data && books.data?.length >= 2) {
       toast.info("Free users can only upload one book. Please upgrade.");
       router.push("/subscriptions");
       return;

@@ -32,7 +32,7 @@ export default function useGpt() {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
-            "Authorization": `Bearer ${token}`,
+            Authorization: `Bearer ${token}`,
           },
           body: JSON.stringify({
             content: content,
@@ -80,9 +80,57 @@ export default function useGpt() {
     [],
   );
 
+  const postUserMessforMultipleBooks = useCallback(
+    async (content: string, clerkId: string, bookIds: string[]) => {
+      console.log(process.env.NEXT_PUBLIC_BASE_EMB_URL);
+      const token = await getToken();
+      setLoading(true);
+      try {
+        const url = process.env.NEXT_PUBLIC_BASE_EMB_URL;
+        const api_url = `${url}/questions/multiple-books/embed`;
+        const res = await fetch(api_url, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+          body: JSON.stringify({
+            content: content,
+            clerkId: clerkId,
+            bookIds: bookIds,
+          }),
+        });
+        const result = await res.json();
+        console.log("data", result);
+        if (result.message === "Success") {
+          setSuccess(true);
+          setGptMessage(result.answer);
+          setMessageArr((prev) => {
+            return [
+              ...prev,
+              {
+                role: "user",
+                content: content,
+              },
+              {
+                role: "assisstent",
+                content: result.answer,
+              },
+            ];
+          });
+        }
+      } catch (e) {
+      } finally {
+        setLoading(false);
+      }
+    },
+    [],
+  );
+
   return {
     loading,
     postUserMess,
+    postUserMessforMultipleBooks,
     gptMessage,
     messageArr,
     success,

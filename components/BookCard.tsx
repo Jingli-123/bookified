@@ -8,9 +8,20 @@ import Image from "next/image";
 import OptionButton from "./ui/option-button";
 import { deleteBook } from "@/lib/actions/book.actions";
 import { useAuth } from "@clerk/nextjs";
-import { Menu, MenuItem } from "@mui/material";
+import Checkbox from "@mui/material/Checkbox";
+import FormLabel from "@mui/material/FormLabel";
+import FormControl from "@mui/material/FormControl";
+import FormGroup from "@mui/material/FormGroup";
+import FormControlLabel from "@mui/material/FormControlLabel";
 
-const BookCard = ({ title, author, coverURL, slug }: BookCardProps) => {
+const BookCard = ({
+  title,
+  author,
+  coverURL,
+  slug,
+  bookId,
+  onSelect,
+}: BookCardProps) => {
   const { userId } = useAuth();
 
   const [openOption, setOpenOption] = useState<boolean>(false);
@@ -54,9 +65,15 @@ const BookCard = ({ title, author, coverURL, slug }: BookCardProps) => {
           </figure>
         </Link>
       </article>
-      <figcaption className="border">
+
+      <figcaption>
+        <FormControlLabel
+          control={<Checkbox name="select" onClick={() => onSelect(bookId)} />}
+          label="Select"
+        />
         <h3 className="book-card-title">{title}</h3>
         <p className="book-card-author">{author}</p>
+        <p className="book-card-author">{bookId}</p>
       </figcaption>
     </div>
   );
