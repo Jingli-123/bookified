@@ -115,11 +115,6 @@ export default function useGpt() {
             return [
               ...prev,
               {
-                role: "user",
-                content: content,
-                citation: [],
-              },
-              {
                 role: "assisstent",
                 content: result.answer,
                 citation: result.citation,
@@ -130,6 +125,9 @@ export default function useGpt() {
           getBookDetails(clerkId, bookId);
         }
       } catch (e) {
+        return {
+          error: e,
+        };
       } finally {
         setLoading(false);
       }
@@ -169,5 +167,6 @@ export default function useGpt() {
     success,
     getBookDetails,
     citation,
+    setMessageArr,
   };
 }

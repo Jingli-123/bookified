@@ -1,10 +1,10 @@
 import { auth } from "@clerk/nextjs/server";
 import { redirect } from "next/navigation";
-import Image from "next/image";
 import Link from "next/link";
-import { ArrowLeft, MicOff, Mic } from "lucide-react";
+import { ArrowLeft } from "lucide-react";
 import { getBookByBookId } from "@/lib/actions/book.actions";
 import MultipleChatBox from "./MultipleChatBox";
+import { IBook } from "@/types";
 
 interface Props {
   bookIds: string[];
@@ -17,21 +17,24 @@ export default async function MultipleBooks({ bookIds }: Props) {
     redirect("/sign-in");
   }
 
-  const result = await getBookByBookId(bookIds[0], userId);
+  const results = await Promise.all(
+    bookIds.map(id => getBookByBookId(id, userId))
+  );
 
-  if (!result.success || !result.data) {
-    redirect("/");
-  }
-
-  const book = result.data;
-  console.log("book multiple", bookIds);
+  const books: IBook[] = results
+    .filter(result => result.success)
+    .map(result => result.data);
 
   return (
     <div className="book-page-container">
       <Link href="/" className="back-btn-floating">
         <ArrowLeft className="size-6 text-[#212a3b]" />
       </Link>
-      <MultipleChatBox book={book} bookIds={bookIds} />
+
+      <MultipleChatBox
+        books={books}
+        bookIds={bookIds}
+      />
     </div>
   );
 }

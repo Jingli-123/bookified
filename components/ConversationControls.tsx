@@ -6,12 +6,23 @@ import { useState } from "react";
 
 export default function ConversationControls({
   onChange,
+  onClick,
 }: IConversationControlsProps) {
   const [message, setMessage] = useState<string>("");
   const handleSend = () => {
     if (!message.trim()) return;
 
-    onChange(message);
+    onClick(message);
+    onChange((prev) => {
+      return [
+        ...prev,
+        {
+          role: "user",
+          content: message,
+          citation: [],
+        },
+      ];
+    });
     setMessage("");
   };
   return (
@@ -31,7 +42,22 @@ export default function ConversationControls({
           input: {
             endAdornment: (
               <InputAdornment position="end">
-                <Button variant="contained" onClick={() => onChange(message)}>
+                <Button
+                  variant="contained"
+                  onClick={() => {
+                    onChange((prev) => {
+                      return [
+                        ...prev,
+                        {
+                          role: "user",
+                          content: message,
+                          citation: [],
+                        },
+                      ];
+                    });
+                    onClick(message);
+                  }}
+                >
                   Send
                 </Button>
               </InputAdornment>

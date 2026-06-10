@@ -14,7 +14,6 @@ const { PLAN_LIMITS } = await import("@/lib/subscription-constants");
 
 export const getAllBooks = async (userId: string, search?: string) => {
   try {
-    console.log("getAllBooks query:", { clerkId: userId });
     if (!userId) {
       return {
         success: false,
@@ -85,7 +84,6 @@ export const getBookDetails = async (userId: string, bookId: string) => {
   await connectToDatabase();
   try {
     const data = await Book.findOne({ clerkId: userId, _id: bookId });
-    console.log("action", data)
     if (data.title) {
       return {
         success: true,
@@ -107,7 +105,6 @@ export const getBookDetails = async (userId: string, bookId: string) => {
 };
 
 export const deleteBook = async (userId: string, bookTitle: string) => {
-  console.log("deleteBook", bookTitle);
   const data = await checkBookExists(bookTitle, userId);
   if (data.book) {
     const id = serializeData(data).book._id;
@@ -119,7 +116,6 @@ export const deleteBook = async (userId: string, bookTitle: string) => {
         clerkId: userId,
         bookId: Object(id),
       });
-      console.log("Deleted", res);
       return {
         success: true,
         error: `You have been deleted book successfully.`,
@@ -221,7 +217,6 @@ export const createEmbeddding = async (clerkId: string, bookId: string) => {
 
   try {
     const token = await getToken();
-    console.log("token", token);
     const res = await fetch(url, {
       method: "POST",
       headers: {
@@ -232,7 +227,7 @@ export const createEmbeddding = async (clerkId: string, bookId: string) => {
         clerkId: clerkId,
       }),
     });
-    console.log("createEmbeddding", res);
+
     const data = await res.json();
     return {
       success: true,

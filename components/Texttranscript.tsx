@@ -8,9 +8,14 @@ import CloseButton from "./ui/close-button";
 interface TranscriptProps {
   messages: Messages[];
   currentUserMessage?: string;
+  loading: boolean;
 }
 
-const Texttranscript = ({ messages, currentUserMessage }: TranscriptProps) => {
+const Texttranscript = ({
+  messages,
+  currentUserMessage,
+  loading,
+}: TranscriptProps) => {
   const scrollRef = useRef<HTMLDivElement>(null);
   const [openSource, setOpenSource] = useState<number | null>(null);
 
@@ -65,7 +70,7 @@ const Texttranscript = ({ messages, currentUserMessage }: TranscriptProps) => {
                           <div className="w-full flex justify-end py-2">
                             <CloseButton onClose={() => setOpenSource(null)} />
                           </div>
-
+                          <p className="p-4">Source {i.source}</p>
                           <p className="p-4">{i.content}</p>
                         </div>
                       </div>

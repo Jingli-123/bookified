@@ -4,6 +4,7 @@ import { Control, FieldPath, FieldValues } from "react-hook-form";
 import { LucideIcon } from "lucide-react";
 import { z } from "zod";
 import { UploadSchema } from "@/lib/zod";
+import { Dispatch, SetStateAction } from "react";
 
 // ============================================
 // DATABASE MODELS
@@ -152,6 +153,10 @@ export interface EndSessionResult {
   error?: string;
 }
 
+// export interface IConversationControlsProps {
+//   onChange: (mess: string) => void;
+// }
 export interface IConversationControlsProps {
-  onChange: (mess: string) => void;
+  onChange: Dispatch<SetStateAction<Message[]>>;
+  onClick:(mess: string) => void;
 }

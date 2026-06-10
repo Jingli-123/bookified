@@ -54,8 +54,8 @@ export default function MultipleControlFeild({ bookIds }: Props) {
     postUserMessforMultipleBooks,
     messageArr,
     success,
-    getBookDetails,
     citation,
+    setMessageArr,
   } = useGpt();
 
   const [value, setValue] = useState(0);
@@ -70,8 +70,6 @@ export default function MultipleControlFeild({ bookIds }: Props) {
   }, [userQuestion]);
 
   useEffect(() => {
-    console.log("excute");
-    // if (loading) return;
     if (!userId || !bookIds) return;
     console.log("message gpt question", userQuestion);
     if (userQuestion !== "") {
@@ -120,9 +118,10 @@ export default function MultipleControlFeild({ bookIds }: Props) {
         <div className="flex flex-col min-h-[300px]">
           <Texttranscript
             messages={messageArr}
+            loading={loading}
             // currentUserMessage={userQuestion as string}
           />
-          <ConversationControls onChange={setUserQuestion} />
+          <ConversationControls onChange={setMessageArr} onClick={setUserQuestion}/>
         </div>
       </CustomTabPanel>
     </Box>
