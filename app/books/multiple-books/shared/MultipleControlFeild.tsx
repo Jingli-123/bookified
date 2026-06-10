@@ -4,10 +4,8 @@ import * as React from "react";
 import Tabs from "@mui/material/Tabs";
 import Tab from "@mui/material/Tab";
 import Box from "@mui/material/Box";
-import Transcript from "@/components/Transcript";
 import Texttranscript from "@/components/Texttranscript";
-import useVapi from "@/hooks/useVapi";
-import { IBook } from "@/types";
+// import { IBook } from "@/types";
 import ConversationControls from "@/components/ConversationControls";
 import useGpt from "@/hooks/useGpt";
 import { useState, useEffect } from "react";
@@ -45,17 +43,19 @@ function a11yProps(index: number) {
   };
 }
 
-interface Props{
-    bookIds:string[];
+interface Props {
+  bookIds: string[];
 }
 
-export default function MultipleControlFeild({bookIds}:Props) {
+export default function MultipleControlFeild({ bookIds }: Props) {
   const { userId } = useAuth();
   const {
     loading,
     postUserMessforMultipleBooks,
     messageArr,
     success,
+    getBookDetails,
+    citation,
   } = useGpt();
 
   const [value, setValue] = useState(0);
@@ -83,8 +83,8 @@ export default function MultipleControlFeild({bookIds}:Props) {
   }, [userQuestion]);
 
   useEffect(() => {
-    console.log("message", messageArr);
-  }, []);
+    console.log("message", citation);
+  }, [citation]);
 
   return (
     <Box sx={{ width: "100%" }}>

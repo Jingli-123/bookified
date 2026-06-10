@@ -1,9 +1,9 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { Mic } from "lucide-react";
+import { Button } from "@mui/material";
 import { Messages } from "@/types";
-import ConversationControls from "./ConversationControls";
+import CloseButton from "./ui/close-button";
 
 interface TranscriptProps {
   messages: Messages[];
@@ -12,6 +12,7 @@ interface TranscriptProps {
 
 const Texttranscript = ({ messages, currentUserMessage }: TranscriptProps) => {
   const scrollRef = useRef<HTMLDivElement>(null);
+  const [openSource, setOpenSource] = useState<number | null>(null);
 
   const scrollToBottom = () => {
     if (scrollRef.current) {
@@ -48,6 +49,30 @@ const Texttranscript = ({ messages, currentUserMessage }: TranscriptProps) => {
             }`}
           >
             {message.content}
+            {message.role !== "user" &&
+              message.citation.map((i) => {
+                return (
+                  <div className="flex gap-2" key={i.source}>
+                    <Button
+                      variant="text"
+                      onClick={() => setOpenSource(i.source)}
+                    >
+                      [{i.source}] {i.content.slice(0, 30)}...
+                    </Button>
+                    {openSource === i.source && (
+                      <div className="fixed w-full h-full inset-0 z-50 flex items-center justify-center bg-black/30">
+                        <div className="bg-white w-[80%] max-h-[500px] overflow-y-auto text-sm rounded-xl">
+                          <div className="w-full flex justify-end py-2">
+                            <CloseButton onClose={() => setOpenSource(null)} />
+                          </div>
+
+                          <p className="p-4">{i.content}</p>
+                        </div>
+                      </div>
+                    )}
+                  </div>
+                );
+              })}
           </div>
         </div>
       ))}

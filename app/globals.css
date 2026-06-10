@@ -480,10 +480,10 @@
      VAPI CONTROLS COMPONENT
      =========================================== */
   .vapi-header-card {
-    @apply flex items-center gap-6 bg-[#f3e4c7] rounded-[14px] p-6 relative overflow-hidden;
+    @apply flex items-center gap-6 bg-white/40 rounded-[14px] p-6 relative overflow-hidden;
   }
   .vapi-compact-header {
-    @apply flex items-center gap-2 bg-[#f3e4c7] rounded-[14px] p-3 mb-3;
+    @apply flex items-center gap-2 bg-white/40 rounded-[14px] p-3 mb-3;
   }
   .vapi-transcript-wrapper {
     @apply min-h-[400px] max-h-[60vh] flex flex-col;
@@ -816,10 +816,10 @@
     @apply max-w-[80%] px-6 py-4 text-base font-medium leading-7 rounded-2xl;
   }
   .transcript-bubble-user {
-    @apply bg-[#663820] text-white rounded-br-sm;
+    @apply bg-[#5B9DFF] text-white rounded-br-sm;
   }
   .transcript-bubble-assistant {
-    @apply bg-[#f3e4c7] text-[#212a3b] rounded-bl-sm;
+    @apply bg-gray-100 border text-[#212a3b] rounded-bl-sm;
   }
   .transcript-cursor {
     @apply inline-block w-0.5 h-5 ml-1 bg-black animate-pulse;

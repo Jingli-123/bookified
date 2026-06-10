@@ -80,13 +80,22 @@ export interface BookCardProps {
   author: string;
   coverURL: string;
   slug: string;
-  bookId:string;
-  onSelect:(id:string)=>void;
+  bookId: string;
+  onSelect: (id: string) => void;
 }
+
+export type citationArr = {
+  source: number;
+  bookId: string;
+  content: string;
+  segmentIndex: number;
+  title: string;
+};
 
 export interface Messages {
   role: string;
   content: string;
+  citation: citationArr[];
 }
 
 export interface ShadowBoxProps {
@@ -143,7 +152,6 @@ export interface EndSessionResult {
   error?: string;
 }
 
-
-export interface IConversationControlsProps{
-  onChange:(mess:string)=>void;
+export interface IConversationControlsProps {
+  onChange: (mess: string) => void;
 }

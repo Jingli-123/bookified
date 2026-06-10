@@ -2,6 +2,8 @@ import { useCallback, useState } from "react";
 import { getErrorMessage } from "../lib/utils";
 import { Messages } from "@/types";
 import { useAuth } from "@clerk/nextjs";
+import { booksURL } from "@/apiURL/apiURLs";
+import { toast } from "sonner";
 
 export default function useGpt() {
   const { getToken } = useAuth();
@@ -14,8 +16,10 @@ export default function useGpt() {
     {
       role: "assisstent",
       content: messStr,
+      citation: [],
     },
   ]);
+  const [citation, setCitation] = useState<string>("");
 
   const postUserMess = useCallback(
     async (content: string, clerkId: string, bookId: string) => {
@@ -51,10 +55,12 @@ export default function useGpt() {
               {
                 role: "user",
                 content: content,
+                citation: [],
               },
               {
                 role: "assisstent",
                 content: result.answer,
+                citation: result.citation,
               },
             ];
           });
@@ -111,13 +117,17 @@ export default function useGpt() {
               {
                 role: "user",
                 content: content,
+                citation: [],
               },
               {
                 role: "assisstent",
                 content: result.answer,
+                citation: result.citation,
               },
             ];
           });
+          const bookId = result.source_segments[0].bookId.$oid;
+          getBookDetails(clerkId, bookId);
         }
       } catch (e) {
       } finally {
@@ -127,6 +137,29 @@ export default function useGpt() {
     [],
   );
 
+  const getBookDetails = useCallback(async (userId: string, bookId: string) => {
+    if (!bookId || !userId) {
+      return;
+    }
+    setLoading(true);
+    try {
+      const url = booksURL.getBookDetail;
+      const response = await fetch(url(userId, bookId));
+      const data = await response.json();
+      if (data.success) {
+        console.log("useGPT", data);
+        setCitation(data.title.book);
+      } else {
+        setCitation("");
+      }
+    } catch (e) {
+      setCitation("");
+      toast.error(`Get book title failed ${e}`);
+    } finally {
+      setLoading(false);
+    }
+  }, []);
+
   return {
     loading,
     postUserMess,
@@ -134,5 +167,7 @@ export default function useGpt() {
     gptMessage,
     messageArr,
     success,
+    getBookDetails,
+    citation,
   };
 }

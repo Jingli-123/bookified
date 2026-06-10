@@ -80,6 +80,32 @@ export const checkBookExists = async (title: string, userId?: string) => {
   }
 };
 
+export const getBookDetails = async (userId: string, bookId: string) => {
+  if (!userId) return;
+  await connectToDatabase();
+  try {
+    const data = await Book.findOne({ clerkId: userId, _id: bookId });
+    console.log("action", data)
+    if (data.title) {
+      return {
+        success: true,
+        book: data.title,
+      };
+    } else {
+      return {
+        success: false,
+        book: "Book not found.",
+      };
+    }
+  } catch (e) {
+    return {
+      success: false,
+      error: e,
+      book: "Book not found.",
+    };
+  }
+};
+
 export const deleteBook = async (userId: string, bookTitle: string) => {
   console.log("deleteBook", bookTitle);
   const data = await checkBookExists(bookTitle, userId);
@@ -245,11 +271,11 @@ export const getBookBySlug = async (slug: string, userId: string) => {
   }
 };
 
-export const getBookByBookId = async (bookId:string, userId: string) => {
+export const getBookByBookId = async (bookId: string, userId: string) => {
   try {
     await connectToDatabase();
 
-    const book = await Book.findOne({ _id:bookId, clerkId: userId }).lean();
+    const book = await Book.findOne({ _id: bookId, clerkId: userId }).lean();
 
     if (!book) {
       return { success: false, error: "Book not found" };
