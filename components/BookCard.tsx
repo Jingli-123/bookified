@@ -20,6 +20,7 @@ const BookCard = ({
   coverURL,
   slug,
   bookId,
+  booksNum,
   onSelect,
 }: BookCardProps) => {
   const { userId } = useAuth();
@@ -67,10 +68,15 @@ const BookCard = ({
       </article>
 
       <figcaption>
-        <FormControlLabel
-          control={<Checkbox name="select" onClick={() => onSelect(bookId)} />}
-          label="Select"
-        />
+        {booksNum > 1 && (
+          <FormControlLabel
+            control={
+              <Checkbox name="select" onClick={() => onSelect(bookId)} />
+            }
+            label="Select"
+          />
+        )}
+
         <h3 className="book-card-title">{title}</h3>
         <p className="book-card-author">{author}</p>
         <p className="book-card-author">{bookId}</p>

@@ -82,6 +82,7 @@ export interface BookCardProps {
   coverURL: string;
   slug: string;
   bookId: string;
+  booksNum:number;
   onSelect: (id: string) => void;
 }
 

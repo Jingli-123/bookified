@@ -6,7 +6,7 @@ import BookCard from "@/components/BookCard";
 import { IBook } from "@/types";
 import { Button } from "@mui/material";
 import { useRouter } from "next/navigation";
-import { Book } from "lucide-react";
+
 
 interface BookLibriaryProps {
   books: IBook[];
@@ -29,10 +29,12 @@ export default function BookLibriary({ books }: BookLibriaryProps) {
           {books &&
             books?.length > 0 &&
             books?.map((book) => {
+              const len = books.length;
               const id = book._id;
               return (
                 <BookCard
                   key={book._id}
+                  booksNum={len}
                   title={book.title}
                   author={book.author}
                   coverURL={book.coverURL}
@@ -50,15 +52,17 @@ export default function BookLibriary({ books }: BookLibriaryProps) {
             })}
         </div>
         <div className="mt-4">
-          <Button
-            variant="contained"
-            onClick={() => {
-              console.log("clicked");
-              router.push(`/books/multiple-books?ids=${bookIdArr.join(",")}`);
-            }}
-          >
-            Import
-          </Button>
+          {books.length > 1 && (
+            <Button
+              variant="contained"
+              onClick={() => {
+                console.log("clicked");
+                router.push(`/books/multiple-books?ids=${bookIdArr.join(",")}`);
+              }}
+            >
+              Import
+            </Button>
+          )}
         </div>
       </div>
     </main>
