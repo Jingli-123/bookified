@@ -193,7 +193,14 @@ export function useVapi(book: IBook) {
             );
             return isDupe
               ? prev
-              : [...prev, { role: message.role, content: message.transcript }];
+              : [
+                  ...prev,
+                  {
+                    role: message.role,
+                    content: message.transcript,
+                    citation: [],
+                  },
+                ];
           });
         }
       },
