@@ -4,9 +4,7 @@ import * as React from "react";
 import Tabs from "@mui/material/Tabs";
 import Tab from "@mui/material/Tab";
 import Box from "@mui/material/Box";
-import Transcript from "@/components/Transcript";
 import Texttranscript from "@/components/Texttranscript";
-import useVapi from "@/hooks/useVapi";
 import { IBook } from "@/types";
 import ConversationControls from "./ConversationControls";
 import useGpt from "@/hooks/useGpt";
@@ -47,25 +45,20 @@ function a11yProps(index: number) {
 
 export default function ControlFeild({ book }: { book: IBook }) {
   const { userId } = useAuth();
-  const { messages, currentMessage, currentUserMessage } = useVapi(book);
-  const { loading, postUserMess, messageArr, success } = useGpt();
+  // const { messages, currentMessage, currentUserMessage } = useVapi(book);
+  const { loading, postUserMess, messageArr, success, setMessageArr } =
+    useGpt();
 
   const [value, setValue] = React.useState(0);
 
   const [userQuestion, setUserQuestion] = useState<string>();
-  const [assistantMess, setAssistantMess] = useState<string>("");
+  // const [assistantMess, setAssistantMess] = useState<string>("");
 
   const handleChange = (event: React.SyntheticEvent, newValue: number) => {
     setValue(newValue);
   };
 
   useEffect(() => {
-    console.log("userQuestion", userQuestion);
-  }, [userQuestion]);
-
-  useEffect(() => {
-    console.log("excute");
-    // if (loading) return;
     if (!userId || !book) return;
     console.log("message gpt question", userQuestion);
     if (userQuestion !== "") {
@@ -75,10 +68,6 @@ export default function ControlFeild({ book }: { book: IBook }) {
       setUserQuestion("");
     }
   }, [userQuestion]);
-
-  useEffect(() => {
-    console.log("message", messageArr);
-  }, []);
 
   return (
     <Box sx={{ width: "100%" }}>
@@ -114,9 +103,13 @@ export default function ControlFeild({ book }: { book: IBook }) {
         <div className="flex flex-col min-h-[300px]">
           <Texttranscript
             messages={messageArr}
+            loading={loading}
             // currentUserMessage={userQuestion as string}
           />
-          <ConversationControls onChange={setUserQuestion} />
+          <ConversationControls
+            onChange={setMessageArr}
+            onClick={setUserQuestion}
+          />
         </div>
       </CustomTabPanel>
     </Box>
