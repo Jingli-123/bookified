@@ -36,8 +36,8 @@ export default function IntroFeature({
         </div>
       </div>
       <div className="flex flex-col items-start justify-between h-full py-6">
-        <p className="font-medium text-sm">{title}</p>
-        <p className="text-[12px]">{description}</p>
+        <p className="font-medium text-[12px]">{title}</p>
+        <p className="text-[10px]">{description}</p>
       </div>
     </div>
   );
