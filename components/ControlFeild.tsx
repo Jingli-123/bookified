@@ -10,6 +10,8 @@ import ConversationControls from "./ConversationControls";
 import useGpt from "@/hooks/useGpt";
 import { useState, useEffect } from "react";
 import { useAuth } from "@clerk/nextjs";
+import Transcript from "./Transcript";
+import useVapi from "@/hooks/useVapi";
 
 interface TabPanelProps {
   children?: React.ReactNode;
@@ -45,7 +47,7 @@ function a11yProps(index: number) {
 
 export default function ControlFeild({ book }: { book: IBook }) {
   const { userId } = useAuth();
-  // const { messages, currentMessage, currentUserMessage } = useVapi(book);
+  const { messages, currentMessage, currentUserMessage } = useVapi(book);
   const { loading, postUserMess, messageArr, success, setMessageArr } =
     useGpt();
 
@@ -88,18 +90,18 @@ export default function ControlFeild({ book }: { book: IBook }) {
             },
           }}
         >
-          {/* <Tab label="Voice Conversation" {...a11yProps(0)} /> */}
-          <Tab label="Text Conversation" {...a11yProps(0)} />
+          <Tab label="Voice Conversation" {...a11yProps(0)} />
+          <Tab label="Text Conversation" {...a11yProps(1)} />
         </Tabs>
       </Box>
-      {/* <CustomTabPanel value={value} index={0}>
+      <CustomTabPanel value={value} index={0}>
         <Transcript
           messages={messages}
           currentMessage={currentMessage}
           currentUserMessage={currentUserMessage}
         />
-      </CustomTabPanel> */}
-      <CustomTabPanel value={value} index={0}>
+      </CustomTabPanel>
+      <CustomTabPanel value={value} index={1}>
         <div className="flex flex-col min-h-[300px]">
           <Texttranscript
             messages={messageArr}

@@ -3,6 +3,21 @@
 
 @custom-variant dark (&:is(.dark *));
 
+@source "@/lib/constants.ts";
+
+@source inline(
+  "bg-sky-200",
+  "bg-purple-200",
+  "bg-green-200",
+  "bg-orange-200",
+  "bg-blue-200",
+  "bg-sky-100",
+  "bg-purple-100",
+  "bg-green-100",
+  "bg-orange-100",
+  "bg-blue-100"
+);
+
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
@@ -145,7 +160,7 @@
   --sidebar-ring: #212a3b; */
   /* Apple-style Frosted Theme */
 
-  --background: #dadafb;
+  --background: white;
   --foreground: #1d1d1f;
 
   --card: rgba(255, 255, 255, 0.72);
@@ -222,7 +237,7 @@
 }
 
 .dark {
-  --background: #1a1918;
+  --background: #010416;
   --foreground: #f7f4ee;
   --card: #252321;
   --card-foreground: #f7f4ee;

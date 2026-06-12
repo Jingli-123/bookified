@@ -9,6 +9,7 @@ interface TranscriptProps {
   messages: Messages[];
   currentUserMessage?: string;
   loading: boolean;
+  bookIds?:string[];
 }
 
 const Texttranscript = ({

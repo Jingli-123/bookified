@@ -8,7 +8,7 @@ import {
   Mona_Sans,
 } from "next/font/google";
 import { ClerkProvider } from "@clerk/nextjs";
-
+import { ThemeProvider } from "next-themes";
 import "./globals.css";
 import { cn } from "@/lib/utils";
 import Navbar from "@/components/Navbar";
@@ -50,10 +50,12 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+
   return (
     <ClerkProvider>
       <html
         lang="en"
+        suppressHydrationWarning
         className={cn(
           "h-full",
           "antialiased",
@@ -66,9 +68,11 @@ export default function RootLayout({
         <body
           className={`${ibmPlexSerif.variable} ${monaSans.variable} relative font-sans antialiased`}
         >
-          <Navbar />
-          {children}
-          <Toaster />
+          <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
+            <Navbar />
+            {children}
+            <Toaster />
+          </ThemeProvider>
         </body>
       </html>
     </ClerkProvider>

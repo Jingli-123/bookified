@@ -14,17 +14,18 @@ import {
 import { cn } from "@/lib/utils";
 import { getAllBooks } from "@/lib/actions/book.actions";
 import { useEffect, useState } from "react";
-import { Button } from "@mui/material";
-import Toggle from "@/components/Toggle";
-import ThemeButton from "./ui/ThemeButton";
-import { navItems, bookNavItems } from "@/lib/constants";
+
+const navItems = [
+  { label: "Library", href: "/" },
+  { label: "Add New", href: "/books/new" },
+  { label: "Pricing", href: "/subscriptions" },
+];
 
 const Navbar = () => {
   const pathName = usePathname();
   const { user } = useUser();
   const { userId } = useAuth();
   const [allBooks, setAllBooks] = useState<number>(0);
-  const navItem = pathName.startsWith("/bookfield") ? bookNavItems : navItems;
   useEffect(() => {
     const fetchBooks = async () => {
       if (userId) {
@@ -38,19 +39,18 @@ const Navbar = () => {
   return (
     <header className="w-full fixed top-0 z-50 bg-white/40 backdrop-blur-2xl border-b border-white/20 shadow-[0_4px_24px_rgba(0,0,0,0.04)]">
       <div className="wrapper navbar-height py-4 flex justify-between items-center">
-        <Link href="/" className="flex gap-1 items-center">
+        <Link href="/" className="flex gap-0.5 items-center">
           <Image
-            src="/assets/logo-mt.svg"
+            src="/assets/logo-feather.png"
             alt="Bookified"
             width={42}
             height={10}
-            className="rounded-full"
           />
           <span className="logo-text">MnemonicThreads</span>
         </Link>
 
         <nav className="w-fit flex gap-7.5 items-center">
-          {navItem
+          {navItems
             .filter((item) => {
               if (item.label === "Add New" && allBooks >= 1) {
                 return false;
@@ -94,15 +94,6 @@ const Navbar = () => {
               </div>
             </SignedIn>
           </div>
-          <div className="flex gap-2">
-            <Link href="/bookfield" target="_blank">
-              <ThemeButton>Book Demo</ThemeButton>
-            </Link>
-            <Link href="/bookfield" target="_blank">
-              <Button variant="contained">Start Free Trial</Button>
-            </Link>
-          </div>
-          <Toggle />
         </nav>
       </div>
     </header>
