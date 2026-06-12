@@ -21,7 +21,7 @@ export default function IntroFeature({
         divcolor,
       )}
       style={{
-        width,
+        maxWidth: width,
       }}
     >
       <div className="flex items-start justify-center w-[40%] h-full py-6">
