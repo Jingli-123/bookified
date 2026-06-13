@@ -53,11 +53,6 @@ export default function useGpt() {
             return [
               ...prev,
               {
-                role: "user",
-                content: content,
-                citation: [],
-              },
-              {
                 role: "assisstent",
                 content: result.answer,
                 citation: result.citation,
