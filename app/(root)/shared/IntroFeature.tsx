@@ -1,6 +1,8 @@
 "use client";
 import { IntroFeatureProps } from "./types";
 import { cn } from "@/lib/utils";
+import { useTheme } from "@mui/material/styles";
+import useMediaQuery from "@mui/material/useMediaQuery";
 
 export default function IntroFeature({
   Icon,
@@ -12,22 +14,29 @@ export default function IntroFeature({
   width,
   iconClassname,
 }: IntroFeatureProps) {
-  console.log(bgcolor);
-  console.log(`bg-${bgcolor}`);
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
+
   return (
     <div
       className={cn(
-        `flex items-center justify-between h-[120px] border shadow-sm rounded-xl`,
+        `flex items-center justify-between h-[140px] border shadow-sm rounded-xl px-1`,
         divcolor,
       )}
-      style={{
-        maxWidth: width,
-      }}
+      style={
+        isMobile
+          ? {
+              width: width,
+            }
+          : {
+              maxWidth: width,
+            }
+      }
     >
       <div className="flex items-start justify-center w-[40%] h-full py-6">
         <div
           className={cn(
-            `flex items-center justify-center w-[40px] h-[40px] rounded-full mx-2`,
+            `flex items-center justify-center w-[40px] h-[40px] rounded-full mx-1`,
             iconClassname,
             bgcolor,
           )}

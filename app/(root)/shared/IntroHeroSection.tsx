@@ -2,12 +2,19 @@
 import { Button } from "@mui/material";
 import { FiStar } from "react-icons/fi";
 import ThemeImage from "@/components/ui/ThemeImage";
+import { useTheme } from "@mui/material/styles";
+import useMediaQuery from "@mui/material/useMediaQuery";
 
 export default function IntroHeroSession() {
+  
+  const theme = useTheme();
+
+  const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
+  
   return (
     <>
       <div className="w-full flex items-center justify-center px-10">
-        <div className="flex flex-col gap-6 w-[30%]">
+        <div className="flex flex-col gap-6 md:w-[40%] w-full">
           <p className="text-sm text-blue-500">AI-POWERED KNOWLEDGE PLATFORM</p>
           <h1 className="font-bold text-4xl text-black dark:text-white">
             Answers grounded in your organization's memory
@@ -29,7 +36,7 @@ export default function IntroHeroSession() {
             <p>Truested by teams handling critical knowledge.</p>
           </div>
         </div>
-        <div>
+        {!isMobile &&<div>
           <ThemeImage
             dark="/assets/homepage-dark.svg"
             light="/assets/homepage-light.svg"
@@ -37,7 +44,7 @@ export default function IntroHeroSession() {
             width={400}
             height={400}
           />
-        </div>
+        </div>}
       </div>
     </>
   );

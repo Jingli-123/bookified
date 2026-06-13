@@ -11,8 +11,10 @@ import { ClerkProvider } from "@clerk/nextjs";
 import { ThemeProvider } from "next-themes";
 import "./globals.css";
 import { cn } from "@/lib/utils";
-import Navbar from "@/components/Navbar";
 import { Toaster } from "@/components/ui/sonner";
+import Navbar from "@/components/Navbar";
+
+
 
 const figtree = Figtree({ subsets: ["latin"], variable: "--font-sans" });
 
@@ -69,7 +71,7 @@ export default function RootLayout({
           className={`${ibmPlexSerif.variable} ${monaSans.variable} relative font-sans antialiased`}
         >
           <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
-            <Navbar />
+           <Navbar />
             {children}
             <Toaster />
           </ThemeProvider>

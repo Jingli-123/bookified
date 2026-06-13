@@ -298,6 +298,7 @@ export const navItems = [
 ];
 
 export const bookNavItems = [
+  { label: "Home", href: "/" },
   { label: "Library", href: "/bookfield" },
   { label: "Add New", href: "/books/new" },
   { label: "Pricing", href: "/subscriptions" },

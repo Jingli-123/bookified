@@ -161,3 +161,13 @@ export interface IConversationControlsProps {
   onChange: Dispatch<SetStateAction<Message[]>>;
   onClick:(mess: string) => void;
 }
+
+export interface IMenuItem {
+  label: string;
+  href: string;
+}
+
+export interface MobileNavMenuProps {
+  menuitem: IMenuItem[];
+  onClose: () => void;
+}

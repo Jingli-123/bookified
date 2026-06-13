@@ -1,11 +1,17 @@
 "use client";
 import ThemeImage from "@/components/ui/ThemeImage";
 import { BiBook } from "react-icons/bi";
+import { useTheme } from "@mui/material/styles";
+import useMediaQuery from "@mui/material/useMediaQuery";
 
 export default function IntroFeaturesSession() {
+  const theme = useTheme();
+
+  const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
+
   return (
-    <div className="flex items-center justify-center border w-[70%] h-[20%] shadow-sm rounded-xl p-4">
-      <div className="flex flex-col items-start justify-center w-[40%] gap-2">
+    <div className="flex items-center justify-center border md:w-[80%] w-full h-[20%] shadow-sm rounded-xl p-4">
+      <div className="flex flex-col items-start justify-center md:w-[40%] gap-2">
         <h1 className="text-2xl">
           Knowledge shouldn't disappear inside documents.
         </h1>
@@ -35,7 +41,7 @@ export default function IntroFeaturesSession() {
           Mnemonic Threads turns information into memory.
         </p>
       </div>
-      <div>
+      {!isMobile && <div>
         <ThemeImage
           dark="/assets/process-dark.svg"
           light="/assets/process.svg"
@@ -43,7 +49,7 @@ export default function IntroFeaturesSession() {
           width={600}
           height={600}
         />
-      </div>
+      </div>}
     </div>
   );
 }

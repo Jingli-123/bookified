@@ -8,9 +8,9 @@ import { MoveRight } from "lucide-react";
 
 export default function IntroSecondSession() {
   return (
-    <div className="flex flex-col items-center justify-center border w-[70%] h-[20%] shadow-sm rounded-xl gap-2 p-4 my-4">
+    <div className="flex flex-col items-center justify-center border md:w-[80%] w-full h-[20%] shadow-sm rounded-xl gap-2 p-4 my-4">
       <h1 className="font-bold text-2xl mb-4">From documents to answers</h1>
-      <div className="flex w-[60%] items-center justify-between">
+      <div className="flex md:w-[60%] w-[99%] items-center justify-between">
         <div>
           <Badge badgeContent={1} color="primary">
             <div className="flex items-center justify-center border w-[80px] h-[80px] shadow-sm rounded-xl">
@@ -20,7 +20,7 @@ export default function IntroSecondSession() {
         </div>
 
         <div className="flex items-center">
-          <div className="w-32 border-t-2 border-dashed border-blue-300"></div>
+          <div className="md:w-32 border-t-2 border-dashed border-blue-300"></div>
           <MoveRight className="text-blue-400" />
         </div>
 
@@ -33,7 +33,7 @@ export default function IntroSecondSession() {
         </div>
 
         <div className="flex items-center">
-          <div className="w-32 border-t-2 border-dashed border-blue-300"></div>
+          <div className="md:w-32 border-t-2 border-dashed border-blue-300"></div>
           <MoveRight className="text-blue-400" />
         </div>
 
@@ -45,7 +45,7 @@ export default function IntroSecondSession() {
           </Badge>
         </div>
       </div>
-      <div className="flex w-[65%] items-start justify-between ml-8">
+      <div className="flex md:w-[65%] w-[97%] items-start justify-between md:ml-8">
         <div className="w-[15%]">
           <p className="font-medium text-lg">Upload</p>
           <p className="text-sm">

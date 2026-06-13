@@ -19,7 +19,7 @@ export default function IntroFeaturesSection({
   return (
     <div className="flex flex-col items-center justify-center border w-full h-[20%] shadow-sm rounded-xl gap-2 p-4 my-4">
       <h1 className={cn("font-bold text-xl", titleClassname)}>{title}</h1>
-      <div className="flex items-center justify-between gap-2 w-full">
+      <div className="flex flex-wrap md:flex-nowrap items-center md:justify-between gap-2 w-full">
         {features.map((item) => {
           return (
             <div className="flex" key={item.title}>

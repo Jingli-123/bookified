@@ -9,5 +9,9 @@ export default async function Page() {
   const result = await getAllBooks(userId!);
 
   const books: IBook[] = result.success ? (result.data ?? []) : [];
-  return <HomePage />;
+  return (
+    <main className="wrapper container flex flex-col items-center gap-2 w-full !px-0">
+      <HomePage />
+    </main>
+  );
 }
