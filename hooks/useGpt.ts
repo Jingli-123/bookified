@@ -11,6 +11,7 @@ export default function useGpt() {
   const messStr: string = "Hi there, How can I help you?";
   const [loading, setLoading] = useState<boolean>(false);
   const [success, setSuccess] = useState<boolean>(false);
+  const [startCov, setStartCov] = useState<boolean>(false);
   const [messageArr, setMessageArr] = useState<Messages[]>([
     {
       role: "assisstent",
@@ -30,27 +31,27 @@ export default function useGpt() {
       const token = await getToken();
 
       // 1. Reset everything before a new request
+      setMessageArr((prev) => [
+        ...prev,
+        {
+          role: "assistant",
+          content: "",
+          citation: [],
+        },
+      ]);
       setLoading(true);
       setSuccess(false);
       setGptMessage(null);
       fullTextBuffer.current = "";
       displayedTextLength.current = 0;
       if (typewriterTimer.current) clearInterval(typewriterTimer.current);
-      setMessageArr((prev) => [
-        ...prev,
-        {
-          role: "assistant",
-          content: "loading",
-          citation: [],
-        },
-      ]);
 
       // 2. Start the smooth typewriter animation interval (e.g., renders 1 char every 40ms)
       typewriterTimer.current = setInterval(() => {
         if (displayedTextLength.current < fullTextBuffer.current.length) {
           displayedTextLength.current += 1;
           // Slice the text up to the current animated length
-
+          setStartCov(true);
           setGptMessage({
             role: "assisstant",
             content: fullTextBuffer.current.slice(
@@ -139,7 +140,7 @@ export default function useGpt() {
 
           return updated;
         });
-
+        setStartCov(false);
         return {
           success: true,
           data: { answer: fullTextBuffer.current, citation: finalCitation },
@@ -163,6 +164,14 @@ export default function useGpt() {
     async (content: string, clerkId: string, bookIds: string[]) => {
       console.log(process.env.NEXT_PUBLIC_BASE_EMB_URL);
       const token = await getToken();
+      setMessageArr((prev) => [
+        ...prev,
+        {
+          role: "assistant",
+          content: "",
+          citation: [],
+        },
+      ]);
 
       // 1. Reset everything before a new request
       setLoading(true);
@@ -171,21 +180,13 @@ export default function useGpt() {
       fullTextBuffer.current = "";
       displayedTextLength.current = 0;
       if (typewriterTimer.current) clearInterval(typewriterTimer.current);
-      setMessageArr((prev) => [
-        ...prev,
-        {
-          role: "assistant",
-          content: "loading",
-          citation: [],
-        },
-      ]);
 
       // 2. Start the smooth typewriter animation interval (e.g., renders 1 char every 40ms)
       typewriterTimer.current = setInterval(() => {
         if (displayedTextLength.current < fullTextBuffer.current.length) {
           displayedTextLength.current += 1;
           // Slice the text up to the current animated length
-
+          setStartCov(true);
           setGptMessage({
             role: "assisstant",
             content: fullTextBuffer.current.slice(
@@ -275,7 +276,7 @@ export default function useGpt() {
 
           return updated;
         });
-
+        setStartCov(false);
         return {
           success: true,
           data: { answer: fullTextBuffer.current, citation: finalCitation },
@@ -330,5 +331,6 @@ export default function useGpt() {
     getBookDetails,
     citation,
     setMessageArr,
+    startCov,
   };
 }

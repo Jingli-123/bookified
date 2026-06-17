@@ -11,6 +11,7 @@ const Texttranscript = ({
   loading,
   realMessage,
   role,
+  startCoversation,
 }: TranscriptProps) => {
   const scrollRef = useRef<HTMLDivElement>(null);
   const [openSource, setOpenSource] = useState<ISource | null>(null);
@@ -26,6 +27,7 @@ const Texttranscript = ({
 
   useEffect(() => {
     scrollToBottom();
+    // console.log("message", messages);
   }, [messages, currentUserMessage]);
 
   return (
@@ -49,9 +51,15 @@ const Texttranscript = ({
                 : "transcript-bubble-assistant"
             }`}
           >
-            {loading &&
-            role === "assisstant" &&
-            index === messages.length - 1 ? (
+            {message.content === "" && loading && !startCoversation ? (
+              <div className="flex gap-1 p-2">
+                <div className="w-2 h-2 bg-gray-500 rounded-full animate-bounce"></div>
+                <div className="w-2 h-2 bg-gray-500 rounded-full animate-bounce delay-100"></div>
+                <div className="w-2 h-2 bg-gray-500 rounded-full animate-bounce delay-200"></div>
+              </div>
+            ) : loading &&
+              role === "assisstant" &&
+              index === messages.length - 1 ? (
               realMessage
             ) : message.citation.length === 0 ? (
               message.content

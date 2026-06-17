@@ -185,4 +185,5 @@ export interface TranscriptProps {
   bookIds?: string[];
   realMessage?: string | null;
   role?: string | null;
+  startCoversation:boolean;
 }

@@ -55,6 +55,7 @@ export default function ControlFeild({ book }: { book: IBook }) {
     success,
     setMessageArr,
     gptMessage,
+    startCov
   } = useGpt();
 
   const [value, setValue] = React.useState(0);
@@ -114,6 +115,7 @@ export default function ControlFeild({ book }: { book: IBook }) {
             realMessage={gptMessage?.content}
             loading={loading}
             role={gptMessage?.role}
+            startCoversation={startCov}
             // currentUserMessage={userQuestion as string}
           />
           <ConversationControls
