@@ -98,6 +98,7 @@ export interface Messages {
   role: string;
   content: string;
   citation: citationArr[];
+  mark?:string;
 }
 
 export interface ShadowBoxProps {
@@ -170,4 +171,18 @@ export interface IMenuItem {
 export interface MobileNavMenuProps {
   menuitem: IMenuItem[];
   onClose: () => void;
+}
+
+export type ISource = {
+  messageIndex: number;
+    source: number;
+}
+
+export interface TranscriptProps {
+  messages: Messages[];
+  currentUserMessage?: string;
+  loading: boolean;
+  bookIds?: string[];
+  realMessage?: string | null;
+  role?: string | null;
 }

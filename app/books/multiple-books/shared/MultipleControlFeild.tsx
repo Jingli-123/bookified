@@ -56,6 +56,7 @@ export default function MultipleControlFeild({ bookIds }: Props) {
     success,
     citation,
     setMessageArr,
+    gptMessage,
   } = useGpt();
 
   const [value, setValue] = useState(0);
@@ -118,7 +119,9 @@ export default function MultipleControlFeild({ bookIds }: Props) {
         <div className="flex flex-col min-h-[300px]">
           <Texttranscript
             messages={messageArr}
+            realMessage={gptMessage?.content}
             loading={loading}
+            role={gptMessage?.role}
             // currentUserMessage={userQuestion as string}
           />
           <ConversationControls onChange={setMessageArr} onClick={setUserQuestion}/>

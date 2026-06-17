@@ -5,7 +5,7 @@ import Tabs from "@mui/material/Tabs";
 import Tab from "@mui/material/Tab";
 import Box from "@mui/material/Box";
 import Texttranscript from "@/components/Texttranscript";
-import { IBook } from "@/types";
+import { IBook, Messages } from "@/types";
 import ConversationControls from "./ConversationControls";
 import useGpt from "@/hooks/useGpt";
 import { useState, useEffect } from "react";
@@ -48,8 +48,14 @@ function a11yProps(index: number) {
 export default function ControlFeild({ book }: { book: IBook }) {
   const { userId } = useAuth();
   const { messages, currentMessage, currentUserMessage } = useVapi(book);
-  const { loading, postUserMess, messageArr, success, setMessageArr } =
-    useGpt();
+  const {
+    loading,
+    postUserMess,
+    messageArr,
+    success,
+    setMessageArr,
+    gptMessage,
+  } = useGpt();
 
   const [value, setValue] = React.useState(0);
 
@@ -105,7 +111,9 @@ export default function ControlFeild({ book }: { book: IBook }) {
         <div className="flex flex-col min-h-[300px]">
           <Texttranscript
             messages={messageArr}
+            realMessage={gptMessage?.content}
             loading={loading}
+            role={gptMessage?.role}
             // currentUserMessage={userQuestion as string}
           />
           <ConversationControls

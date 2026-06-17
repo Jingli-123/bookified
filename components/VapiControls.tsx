@@ -6,7 +6,7 @@ import { IBook } from "@/types";
 import Image from "next/image";
 import Transcript from "@/components/Transcript";
 import { toast } from "sonner";
-import BasicTabs from "./ControlFeild";
+import ControlFeild from "./ControlFeild";
 import { useRouter } from "next/navigation";
 import { useEffect } from "react";
 
@@ -123,7 +123,7 @@ const VapiControls = ({ book }: { book: IBook }) => {
           </div>
         </div>
         <div className="flex">
-          <BasicTabs book={book} />
+          <ControlFeild book={book} />
         </div>
 
         {/* <div className="vapi-transcript-wrapper">
