@@ -61,7 +61,7 @@ export default function MultipleControlFeild({ bookIds }: Props) {
   } = useGpt();
 
   const [value, setValue] = useState(0);
-  const [userQuestion, setUserQuestion] = useState<string>();
+  const [userQuestion, setUserQuestion] = useState<string>("");
 
   const handleChange = (event: React.SyntheticEvent, newValue: number) => {
     setValue(newValue);
@@ -81,10 +81,6 @@ export default function MultipleControlFeild({ bookIds }: Props) {
       setUserQuestion("");
     }
   }, [userQuestion]);
-
-  useEffect(() => {
-    console.log("message", citation);
-  }, [citation]);
 
   return (
     <Box sx={{ width: "100%" }}>

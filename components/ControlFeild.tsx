@@ -60,7 +60,7 @@ export default function ControlFeild({ book }: { book: IBook }) {
 
   const [value, setValue] = React.useState(0);
 
-  const [userQuestion, setUserQuestion] = useState<string>();
+  const [userQuestion, setUserQuestion] = useState<string>("");
   // const [assistantMess, setAssistantMess] = useState<string>("");
 
   const handleChange = (event: React.SyntheticEvent, newValue: number) => {

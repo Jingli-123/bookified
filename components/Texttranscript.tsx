@@ -27,7 +27,7 @@ const Texttranscript = ({
 
   useEffect(() => {
     scrollToBottom();
-    // console.log("message", messages);
+    console.log("message", messages);
   }, [messages, currentUserMessage]);
 
   return (
