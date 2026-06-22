@@ -2,7 +2,7 @@
 
 import { IBook } from "@/types";
 import Image from "next/image";
-import ControlFeild from "@/components/ControlFeild";
+// import ControlFeild from "@/components/ControlFeild";
 import { useRouter } from "next/navigation";
 import MultipleControlFeild from "./MultipleControlFeild";
 
