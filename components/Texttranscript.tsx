@@ -1,9 +1,10 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { Button, dividerClasses } from "@mui/material";
-import { Messages, ISource, TranscriptProps } from "@/types";
+import { Button } from "@mui/material";
+import { ISource, TranscriptProps } from "@/types";
 import CloseButton from "./ui/close-button";
+import LoadingDots from "./ui/loading-dots";
 
 const Texttranscript = ({
   messages,
@@ -52,11 +53,7 @@ const Texttranscript = ({
             }`}
           >
             {message.content === "" && loading && !startCoversation ? (
-              <div className="flex gap-1 p-2">
-                <div className="w-2 h-2 bg-gray-500 rounded-full animate-bounce"></div>
-                <div className="w-2 h-2 bg-gray-500 rounded-full animate-bounce delay-100"></div>
-                <div className="w-2 h-2 bg-gray-500 rounded-full animate-bounce delay-200"></div>
-              </div>
+              <LoadingDots />
             ) : loading &&
               role === "assisstant" &&
               index === messages.length - 1 ? (

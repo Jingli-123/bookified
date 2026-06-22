@@ -1,7 +1,6 @@
 "use client";
 import HeroSection from "@/components/HeroSection";
 import { useEffect, useState } from "react";
-import { useAuth } from "@clerk/nextjs";
 import BookCard from "@/components/BookCard";
 import { IBook } from "@/types";
 import { Button } from "@mui/material";
@@ -12,7 +11,6 @@ interface BookLibriaryProps {
   books: IBook[];
 }
 export default function BookLibriary({ books }: BookLibriaryProps) {
-  const { userId } = useAuth();
   const router = useRouter();
   const [bookIdArr, setBookIdArr] = useState<string[]>([]);
 
@@ -30,7 +28,6 @@ export default function BookLibriary({ books }: BookLibriaryProps) {
             books?.length > 0 &&
             books?.map((book) => {
               const len = books.length;
-              const id = book._id;
               return (
                 <BookCard
                   key={book._id}

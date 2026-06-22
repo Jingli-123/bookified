@@ -1,5 +1,5 @@
-import React from "react";
-import UploadForm from "@/components/uploadForm";
+// import React from "react";
+// import UploadForm from "@/components/uploadForm";
 
 const page = () => {
   return (

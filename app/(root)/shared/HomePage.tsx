@@ -24,7 +24,7 @@ export default function HomePage() {
 
   const theme = useTheme();
 
-  const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
+  // const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
 
   return (
     <div className="flex flex-col items-center !m-0 !p-0 justify-center w-[98%] md:mt-[100px] px-4">

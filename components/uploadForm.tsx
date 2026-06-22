@@ -190,21 +190,6 @@ const UploadForm = () => {
         return;
       }
 
-      const segments = await saveBookSegments(
-        book.data._id,
-        userId,
-        parsedPDF.content,
-      );
-
-      if (!segments.success) {
-        toast.error("Failed to save book segments");
-        throw new Error("Failed to save book segments");
-      }
-
-      const res = await createEmbeddding(userId, book.data._id);
-
-      console.log("create embedding", res);
-
       form.reset();
       router.push("/");
     } catch (error) {
