@@ -1,9 +1,12 @@
+"use client";
+
 import { useCallback, useState, useRef } from "react";
 import { getErrorMessage } from "../lib/utils";
 import { Messages } from "@/types";
 import { useAuth } from "@clerk/nextjs";
 import { booksURL } from "@/apiURL/apiURLs";
 import { toast } from "sonner";
+import { createEmbeddding } from "@/lib/actions/book.actions";
 
 export default function useGpt() {
   const { getToken } = useAuth();
@@ -321,6 +324,47 @@ export default function useGpt() {
     }
   }, []);
 
+  const chunckBook = useCallback(
+    async (
+      blobUrl: string,
+      bookId: string,
+      bookTitle: string,
+      clerkId: string,
+    ) => {
+      const url = `${process.env.NEXT_PUBLIC_BASE_EMB_URL}/books/chunk-by-blob`;
+      const token = await getToken();
+      if (!token || !clerkId) {
+        throw new Error("Unauthorized");
+      }
+
+      try {
+        const res = await fetch(url, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+          body: JSON.stringify({
+            blob_url: blobUrl,
+            bookId: bookId,
+            clerkId: clerkId,
+            bookTitle: bookTitle,
+          }),
+        });
+        const data: { success: boolean; page: number; chunks: number } =
+          await res.json();
+        if (data.success) {
+          const res = await createEmbeddding(clerkId, bookId);
+          if (res.success) {
+            toast.info("Book created successfully.");
+          }
+        }
+      } catch (err) {
+        console.log("Error", err);
+      }
+    },
+    [],
+  );
   return {
     loading,
     postUserMess,
@@ -332,5 +376,6 @@ export default function useGpt() {
     citation,
     setMessageArr,
     startCov,
+    chunckBook,
   };
 }

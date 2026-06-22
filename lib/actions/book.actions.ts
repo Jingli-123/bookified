@@ -211,10 +211,11 @@ export const createBook = async (data: CreateBook, userId: string) => {
 };
 
 export const createEmbeddding = async (clerkId: string, bookId: string) => {
-  if (!clerkId) return;
+  if (!clerkId) {
+    throw new Error("Unauthorized");
+  }
   const url = `${process.env.NEXT_PUBLIC_BASE_EMB_URL}/booksegments/embedding/${bookId}`;
   const { getToken } = await auth();
-
   try {
     const token = await getToken();
     const res = await fetch(url, {
