@@ -1,5 +1,3 @@
-"use client";
-
 import { PiX } from "react-icons/pi";
 
 interface Props {
